@@ -26,6 +26,10 @@ const routes: Routes = [
         (m) => m.TrainigModule
       ),
   },
+  {
+    path: '**',
+    redirectTo: 'singup',
+  },
 ];
 
 @NgModule({

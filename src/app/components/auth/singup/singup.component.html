@@ -3,6 +3,7 @@
   <form
     fxLayout="column"
     fxLayoutAlign="center center"
+    fxLayoutGap="1rem"
     [formGroup]="singupForm"
     (ngSubmit)="onSubmit()"
   >
@@ -15,7 +16,10 @@
       />
       <!-- Material errors, way to use it -->
       <mat-error *ngIf="emailRequiredError">Field must not be empty.</mat-error>
-      <mat-error *ngIf="emailMinLengthError">E-Mail is invalid.</mat-error>
+      <mat-error *ngIf="emailTypeError">Must be a valid mail.</mat-error>
+      <!-- <mat-error *ngIf="emailMinLengthError"
+        >Cannot be less than 6 characters</mat-error
+      > -->
     </mat-form-field>
     <mat-form-field>
       <input
@@ -29,6 +33,30 @@
         >{{ singupForm.get("password")?.value?.length }} / 6</mat-hint
       >
     </mat-form-field>
-    <button type="submit" mat-raised-button color="primary">Submit</button>
+    <mat-form-field>
+      <input
+        formControlName="birthdata"
+        matInput
+        [matDatepicker]="picker"
+        placeholder="Your Birthdata"
+        [max]="maxDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>Must be a valid date.</mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="agree" color="primary"
+      >Agree to Terms and Conditions.</mat-checkbox
+    >
+
+    <button
+      [disabled]="singupForm.invalid"
+      type="submit"
+      mat-raised-button
+      color="primary"
+    >
+      Submit
+    </button>
   </form>
 </section>

@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class SingupComponent implements OnInit {
   singupForm!: FormGroup;
+  maxDate!: Date;
 
   constructor(private fb: FormBuilder) {}
 
@@ -15,15 +16,24 @@ export class SingupComponent implements OnInit {
     this.singupForm = this.fb.group({
       email: [
         null,
-        [Validators.email, Validators.required, Validators.minLength(6)],
+        [Validators.required, Validators.email, Validators.minLength(6)],
       ],
       password: [null, [Validators.required, Validators.minLength(6)]],
+      birthdata: [null, [Validators.required]],
+      agree: [null, [Validators.requiredTrue]],
     });
+
+    this.setMaxDate();
   }
 
   get emailRequiredError() {
     const email = this.singupForm.get('email');
     return email?.hasError('required') && email?.touched;
+  }
+
+  get emailTypeError() {
+    const email = this.singupForm.get('email');
+    return email?.hasError('email') && email?.touched;
   }
 
   get emailMinLengthError() {
@@ -37,5 +47,11 @@ export class SingupComponent implements OnInit {
     } else {
       this.singupForm.markAllAsTouched();
     }
+  }
+
+  private setMaxDate() {
+    this.maxDate = new Date();
+    // Today minus 18 years
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 }
