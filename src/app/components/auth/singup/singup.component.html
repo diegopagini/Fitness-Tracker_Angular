@@ -1,1 +1,36 @@
-<p>singup works!</p>
+<section class="singup-form">
+  <form
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    [formGroup]="singupForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <mat-form-field>
+      <input
+        type="email"
+        matInput
+        placeholder="Your email"
+        formControlName="email"
+      />
+      <mat-error *ngIf="singupForm.get('email')?.hasError('required')"
+        >Field must not be empty.</mat-error
+      >
+      <mat-error *ngIf="singupForm.get('email')?.hasError('minlength')"
+        >E-Mail is invalid.</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        type="password"
+        matInput
+        placeholder="Your password"
+        formControlName="password"
+      />
+      <mat-hint align="start">Should be at least 6 characters long</mat-hint>
+      <mat-hint align="end"
+        >{{ singupForm.get("password")?.value?.length }} / 6</mat-hint
+      >
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary">Submit</button>
+  </form>
+</section>
