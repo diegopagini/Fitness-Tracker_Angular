@@ -21,6 +21,16 @@ export class SingupComponent implements OnInit {
     });
   }
 
+  get emailRequiredError() {
+    const email = this.singupForm.get('email');
+    return email?.hasError('required') && email?.touched;
+  }
+
+  get emailMinLengthError() {
+    const email = this.singupForm.get('email');
+    return email?.hasError('minlength') && email?.touched;
+  }
+
   onSubmit() {
     if (this.singupForm.valid) {
       console.log(this.singupForm.value);

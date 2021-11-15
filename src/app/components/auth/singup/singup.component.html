@@ -1,4 +1,5 @@
 <section class="singup-form">
+  <!-- fxLayout directives to use flexbox -->
   <form
     fxLayout="column"
     fxLayoutAlign="center center"
@@ -12,12 +13,9 @@
         placeholder="Your email"
         formControlName="email"
       />
-      <mat-error *ngIf="singupForm.get('email')?.hasError('required')"
-        >Field must not be empty.</mat-error
-      >
-      <mat-error *ngIf="singupForm.get('email')?.hasError('minlength')"
-        >E-Mail is invalid.</mat-error
-      >
+      <!-- Material errors, way to use it -->
+      <mat-error *ngIf="emailRequiredError">Field must not be empty.</mat-error>
+      <mat-error *ngIf="emailMinLengthError">E-Mail is invalid.</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input

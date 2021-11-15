@@ -4,6 +4,7 @@ import { SingupComponent } from './singup.component';
 import { SingupRoutingModule } from './singup-routing.module';
 import { MaterialModule } from 'src/app/shared/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [SingupComponent],
@@ -12,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     SingupRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
   ],
   exports: [SingupComponent, SingupRoutingModule],
 })
