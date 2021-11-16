@@ -7,23 +7,18 @@ import { CurrentModule } from './trainig/current/current.module';
 import { NewTrainingModule } from './trainig/new-training/new-training.module';
 import { PastTrainingsModule } from './trainig/past-trainings/past-trainings.module';
 
+const components = [
+  CommonModule,
+  SingupModule,
+  LoginModule,
+  TrainigModule,
+  CurrentModule,
+  NewTrainingModule,
+  PastTrainingsModule,
+];
+
 @NgModule({
-  imports: [
-    CommonModule,
-    SingupModule,
-    LoginModule,
-    TrainigModule,
-    CurrentModule,
-    NewTrainingModule,
-    PastTrainingsModule,
-  ],
-  exports: [
-    SingupModule,
-    LoginModule,
-    TrainigModule,
-    CurrentModule,
-    NewTrainingModule,
-    PastTrainingsModule,
-  ],
+  imports: [...components],
+  exports: [...components],
 })
 export class ComponentsModule {}

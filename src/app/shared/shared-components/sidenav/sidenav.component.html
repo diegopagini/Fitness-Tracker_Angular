@@ -1,22 +1,3 @@
-<mat-sidenav-container>
-  <mat-sidenav #sidenav role="navigation">
-    <p>Im the sidenav!</p>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <div>
-        <button (click)="sidenav.toggle()">Toggle Sidenav</button>
-      </div>
-      <div>LOGO</div>
-      <div>
-        <a routerLink="/singup">Singup</a>
-        <a routerLink="/login">Login</a>
-        <a routerLink="/training">Training</a>
-      </div>
-    </mat-toolbar>
-    <main>
-      <!-- here will be the router outlet -->
-      <ng-content></ng-content>
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<aft-header>
+  <ng-content></ng-content>
+</aft-header>
