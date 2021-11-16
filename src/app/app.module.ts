@@ -8,6 +8,7 @@ import { ComponentsModule } from './components/components.module';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedComponentsModule } from './shared/shared-components/shared-components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     RouterModule,
     AppRoutingModule,
     FlexLayoutModule,
+    SharedComponentsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
