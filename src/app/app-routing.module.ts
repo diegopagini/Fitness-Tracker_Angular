@@ -3,11 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'singup',
-    pathMatch: 'full',
-  },
-  {
     path: 'login',
     loadChildren: () =>
       import('./components/auth/login/login.module').then((m) => m.LoginModule),
@@ -27,8 +22,20 @@ const routes: Routes = [
       ),
   },
   {
+    path: '',
+    redirectTo: 'welcome',
+    pathMatch: 'full',
+  },
+  {
+    path: 'welcome',
+    loadChildren: () =>
+      import('./components/welcome/welcome.module').then(
+        (m) => m.WelcomeModule
+      ),
+  },
+  {
     path: '**',
-    redirectTo: 'singup',
+    redirectTo: 'welcome',
   },
 ];
 

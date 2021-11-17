@@ -9,6 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const modules = [
   MatButtonModule,
@@ -21,6 +22,7 @@ const modules = [
   MatToolbarModule,
   MatSidenavModule,
   MatListModule,
+  MatTabsModule,
 ];
 
 @NgModule({
