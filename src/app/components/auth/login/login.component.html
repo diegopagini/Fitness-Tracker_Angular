@@ -12,7 +12,12 @@
       <mat-error *ngIf="emailTypeError">Must be a valid mail.</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Your Password" formControlName="password" />
+      <input
+        matInput
+        type="password"
+        placeholder="Your Password"
+        formControlName="password"
+      />
       <mat-error>Missing password.</mat-error>
     </mat-form-field>
 

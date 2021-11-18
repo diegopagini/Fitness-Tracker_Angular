@@ -1,3 +1,7 @@
+.login {
+  padding: 2rem 1rem;
+}
+
 mat-form-field {
   width: 300px;
 }
