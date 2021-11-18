@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'aft-trainig',
   templateUrl: './trainig.component.html',
-  styleUrls: ['./trainig.component.css']
+  styleUrls: ['./trainig.component.css'],
 })
-export class TrainigComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class TrainigComponent {
+  ongoingTraining = false;
 }

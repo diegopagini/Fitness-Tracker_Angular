@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewTrainingComponent } from './new-training.component';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from 'src/app/shared/material/material.module';
+import { StopTrainingComponent } from './stop-training.component';
 
 @NgModule({
-  declarations: [NewTrainingComponent],
+  declarations: [StopTrainingComponent],
   imports: [CommonModule, FlexLayoutModule, MaterialModule],
-  exports: [NewTrainingComponent],
+  exports: [StopTrainingComponent],
 })
-export class NewTrainingModule {}
+export class StopTrainingModule {}

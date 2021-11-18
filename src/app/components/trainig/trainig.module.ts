@@ -6,6 +6,7 @@ import { MaterialModule } from 'src/app/shared/material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NewTrainingModule } from './new-training/new-training.module';
 import { PastTrainingsModule } from './past-trainings/past-trainings.module';
+import { CurrentModule } from './current/current.module';
 
 @NgModule({
   declarations: [TrainigComponent],
@@ -16,6 +17,7 @@ import { PastTrainingsModule } from './past-trainings/past-trainings.module';
     FlexLayoutModule,
     NewTrainingModule,
     PastTrainingsModule,
+    CurrentModule,
   ],
   exports: [TrainigComponent, TrainingRoutinModule],
 })

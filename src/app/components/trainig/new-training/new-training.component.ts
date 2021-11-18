@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'aft-new-training',
   templateUrl: './new-training.component.html',
-  styleUrls: ['./new-training.component.css']
+  styleUrls: ['./new-training.component.css'],
 })
-export class NewTrainingComponent implements OnInit {
+export class NewTrainingComponent {
+  @Output() trainingStart = new EventEmitter<void>();
 
-  constructor() { }
-
-  ngOnInit(): void {
+  onStartTraining() {
+    this.trainingStart.emit();
   }
-
 }
