@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './components/auth/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -20,11 +21,8 @@ const routes: Routes = [
       import('./components/trainig/trainig.module').then(
         (m) => m.TrainigModule
       ),
-  },
-  {
-    path: '',
-    redirectTo: 'welcome',
-    pathMatch: 'full',
+    // Guard to avoid canActivate the route if the user is not logued in
+    canActivate: [AuthGuard],
   },
   {
     path: 'welcome',
@@ -32,6 +30,11 @@ const routes: Routes = [
       import('./components/welcome/welcome.module').then(
         (m) => m.WelcomeModule
       ),
+  },
+  {
+    path: '',
+    redirectTo: 'welcome',
+    pathMatch: 'full',
   },
   {
     path: '**',

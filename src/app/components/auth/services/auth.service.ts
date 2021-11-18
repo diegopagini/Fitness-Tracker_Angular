@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthData } from '../models/auth-data.model';
 import { User } from '../models/user.model';
@@ -11,12 +12,14 @@ export class AuthService {
   private subject = new BehaviorSubject<boolean>(false);
   authChange$: Observable<boolean> = this.subject.asObservable();
 
+  constructor(private router: Router) {}
+
   registerUser(authData: AuthData): void {
     this.user = {
       email: authData.email,
       userId: Math.round(Math.random() * 10000).toString(),
     };
-    this.subject.next(true);
+    this.authSuccessfully();
   }
 
   login(authData: AuthData): void {
@@ -24,12 +27,13 @@ export class AuthService {
       email: authData.email,
       userId: Math.round(Math.random() * 10000).toString(),
     };
-    this.subject.next(true);
+    this.authSuccessfully();
   }
 
   logout(): void {
     this.user = null;
     this.subject.next(false);
+    this.router.navigate(['/login']);
   }
 
   getUser(): any {
@@ -39,5 +43,10 @@ export class AuthService {
 
   isAuth(): boolean {
     return this.user != null;
+  }
+
+  private authSuccessfully(): void {
+    this.subject.next(true);
+    this.router.navigate(['/training']);
   }
 }

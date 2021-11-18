@@ -29,3 +29,7 @@ a:hover {
   display: inline-block;
   padding-left: 0.5rem;
 }
+
+.logout {
+  cursor: pointer;
+}
