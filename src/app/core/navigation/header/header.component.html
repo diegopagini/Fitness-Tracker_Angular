@@ -1,6 +1,9 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav role="navigation">
-    <aft-sidenav-list (sidenavToggle)="sidenav.toggle()"></aft-sidenav-list>
+    <aft-sidenav-list
+      (authEmitter)="onAuthEmit($event)"
+      (sidenavToggle)="sidenav.toggle()"
+    ></aft-sidenav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -17,16 +20,16 @@
       <!-- fxHide.xs will hide the toolbar on screens that are less than 600px -->
       <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
         <ul fxLayout fxLayoutGap="10px" class="navigation-items">
-          <li>
+          <li *ngIf="!isAuth">
             <a routerLink="/singup">Singup</a>
           </li>
-          <li>
+          <li *ngIf="!isAuth">
             <a routerLink="/login">Login</a>
           </li>
-          <li>
+          <li *ngIf="isAuth">
             <a routerLink="/training">Training</a>
           </li>
-          <li>
+          <li *ngIf="isAuth">
             <a>Logout</a>
           </li>
         </ul>

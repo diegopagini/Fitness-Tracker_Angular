@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'aft-singup',
@@ -10,7 +11,7 @@ export class SingupComponent implements OnInit {
   singupForm!: FormGroup;
   maxDate!: Date;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.singupForm = this.fb.group({
@@ -43,7 +44,10 @@ export class SingupComponent implements OnInit {
 
   onSubmit() {
     if (this.singupForm.valid) {
-      console.log(this.singupForm.value);
+      this.authService.registerUser({
+        email: this.singupForm.get('email')?.value,
+        password: this.singupForm.get('password')?.value,
+      });
     } else {
       this.singupForm.markAllAsTouched();
     }
