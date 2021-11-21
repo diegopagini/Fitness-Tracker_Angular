@@ -1,3 +1,15 @@
+<!-- Filtering -->
+<div fxLayoutAlign="center center">
+  <mat-form-field fxFlex="90%">
+    <input
+      matInput
+      type="text"
+      (keyup)="doFilter($event)"
+      placeholder="Filter"
+    />
+  </mat-form-field>
+</div>
+
 <!-- matSort is needed to make sortable the table -->
 <mat-table [dataSource]="dataSource" matSort>
   <ng-container matColumnDef="date">
@@ -39,3 +51,5 @@
   <!-- This way we define the columns of the table -->
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
+
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
