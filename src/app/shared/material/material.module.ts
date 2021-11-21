@@ -14,6 +14,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort'; // This module is needed to use sort on tables
 
 const modules = [
   MatButtonModule,
@@ -31,6 +33,8 @@ const modules = [
   MatSelectModule,
   MatProgressSpinnerModule,
   MatDialogModule,
+  MatTableModule,
+  MatSortModule,
 ];
 
 @NgModule({

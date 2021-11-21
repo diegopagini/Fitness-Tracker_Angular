@@ -1,1 +1,41 @@
-<p>past-trainings works!</p>
+<!-- matSort is needed to make sortable the table -->
+<mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="date">
+    <!-- This is the column of the table, and mat-sort-header is added to say that column is goin to be sortable -->
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+    <!-- This is the row of the previous column table. It will loop like ngFor with the directive matCellDef -->
+    <mat-cell *matCellDef="let element">{{ element.date | date }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="calories">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Calories</mat-header-cell
+    >
+    <mat-cell *matCellDef="let element">{{
+      element.calories | number
+    }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="duration">
+    <mat-header-cell *matHeaderCellDef mat-sort-header
+      >Duration</mat-header-cell
+    >
+    <mat-cell *matCellDef="let element">{{
+      element.duration | number
+    }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="state">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>State</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.state }}</mat-cell>
+  </ng-container>
+  <!-- This way we define the headers of the table -->
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <!-- This way we define the columns of the table -->
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
