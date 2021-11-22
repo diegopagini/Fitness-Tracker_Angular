@@ -4,6 +4,7 @@ import { Observable, Subject, throwError } from 'rxjs';
 import { Exercise } from '../models/exercise.model';
 import { catchError, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { UiService } from 'src/app/shared/services/ui.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class TrainingService {
   private runingExercise: any;
   private exercises: Exercise[] = [];
 
-  constructor(private db: AngularFirestore) {}
+  constructor(private db: AngularFirestore, private uiService: UiService) {}
 
   getAvailableExercises(): Observable<Exercise[]> {
     return this.db
@@ -29,6 +30,7 @@ export class TrainingService {
           });
         }),
         catchError((err) => {
+          this.uiService.showSnackBar(err.message, '', 2500);
           return throwError(err);
         })
       );
@@ -79,6 +81,7 @@ export class TrainingService {
       .valueChanges()
       .pipe(
         catchError((err) => {
+          this.uiService.showSnackBar(err.message, '', 2500);
           return throwError(err);
         })
       );

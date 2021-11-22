@@ -1,7 +1,15 @@
 mat-sidenav-container,
 mat-sidenav-content,
 mat-sidenav {
-  height: 100%;
+  height: calc(100% - 56px);
+}
+
+@media screen and (min-width: 991px) {
+  mat-sidenav-container,
+  mat-sidenav-content,
+  mat-sidenav {
+    height: calc(100% - 64px);
+  }
 }
 
 mat-sidenav {
