@@ -24,5 +24,6 @@
     <button mat-raised-button color="primary" [disabled]="loginForm.invalid">
       Login
     </button>
+    <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
   </form>
 </section>

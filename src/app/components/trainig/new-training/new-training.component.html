@@ -30,6 +30,7 @@
         >
           {{ "Start" | uppercase }}
         </button>
+        <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
       </mat-card-actions>
     </mat-card>
   </form>

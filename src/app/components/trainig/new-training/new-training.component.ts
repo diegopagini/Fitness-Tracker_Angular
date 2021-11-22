@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TrainingService } from '../services/training.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Exercise } from '../models/exercise.model';
 import { takeUntil } from 'rxjs/operators';
+import { UiService } from 'src/app/shared/services/ui.service';
 
 @Component({
   selector: 'aft-new-training',
@@ -14,13 +15,19 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   exercises$!: Observable<Exercise[]>;
   newTrainingForm!: FormGroup;
   private unsubscribe$ = new Subject<void>();
+  isLoading$: Observable<boolean> = of(false);
 
   constructor(
     private trainingService: TrainingService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private uiService: UiService
   ) {}
 
   ngOnInit(): void {
+    this.isLoading$ = this.uiService.loadingStateChanged$.pipe(
+      takeUntil(this.unsubscribe$)
+    );
+
     this.exercises$ = this.trainingService
       .getAvailableExercises()
       .pipe(takeUntil(this.unsubscribe$));

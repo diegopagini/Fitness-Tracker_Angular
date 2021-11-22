@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { Exercise } from '../models/exercise.model';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,9 @@ export class TrainingService {
               ...doc.payload.doc.data(),
             };
           });
+        }),
+        catchError((err) => {
+          return throwError(err);
         })
       );
   }
@@ -70,7 +74,14 @@ export class TrainingService {
   }
 
   getCompletedOrCancelledExercises(): Observable<any> {
-    return this.db.collection('finishedExercises').valueChanges();
+    return this.db
+      .collection('finishedExercises')
+      .valueChanges()
+      .pipe(
+        catchError((err) => {
+          return throwError(err);
+        })
+      );
   }
 
   private addDataToDatabase(exercise: Exercise): void {

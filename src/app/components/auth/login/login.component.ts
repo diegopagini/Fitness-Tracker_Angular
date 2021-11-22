@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, of, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { UiService } from 'src/app/shared/services/ui.service';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -7,12 +10,22 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
+  isLoading$: Observable<boolean> = of(false);
+  private unsubscribe$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private uiService: UiService
+  ) {}
 
   ngOnInit(): void {
+    this.isLoading$ = this.uiService.loadingStateChanged$.pipe(
+      takeUntil(this.unsubscribe$)
+    );
+
     this.loginForm = this.fb.group({
       email: [
         null,
@@ -42,12 +55,17 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      this.authService.registerUser({
+      this.authService.login({
         email: this.loginForm.get('email')?.value,
         password: this.loginForm.get('password')?.value,
       });
     } else {
       this.loginForm.markAllAsTouched();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

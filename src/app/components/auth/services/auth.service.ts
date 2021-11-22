@@ -1,52 +1,76 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { UiService } from 'src/app/shared/services/ui.service';
 import { AuthData } from '../models/auth-data.model';
-import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private user!: User | null;
+  private isAuthenticated = false;
   private subject = new BehaviorSubject<boolean>(false);
   authChange$: Observable<boolean> = this.subject.asObservable();
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private afAuth: AngularFireAuth,
+    private snack: MatSnackBar,
+    private uiService: UiService
+  ) {}
+
+  initAuthListener() {
+    this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.isAuthenticated = true;
+        this.subject.next(true);
+        this.router.navigate(['/training']);
+      } else {
+        this.subject.next(false);
+        this.router.navigate(['/login']);
+        this.isAuthenticated = false;
+      }
+    });
+  }
 
   registerUser(authData: AuthData): void {
-    this.user = {
-      email: authData.email,
-      userId: Math.round(Math.random() * 10000).toString(),
-    };
-    this.authSuccessfully();
+    this.uiService.loadingStateChanged$.next(true);
+    this.afAuth
+      .createUserWithEmailAndPassword(authData.email, authData.password)
+      .then(() => {
+        this.uiService.loadingStateChanged$.next(false);
+      })
+      .catch((err) => {
+        this.uiService.loadingStateChanged$.next(false);
+
+        this.snack.open(err.message, '', {
+          duration: 3000,
+        });
+      });
   }
 
   login(authData: AuthData): void {
-    this.user = {
-      email: authData.email,
-      userId: Math.round(Math.random() * 10000).toString(),
-    };
-    this.authSuccessfully();
+    this.uiService.loadingStateChanged$.next(true);
+    this.afAuth
+      .signInWithEmailAndPassword(authData.email, authData.password)
+      .then(() => {
+        this.uiService.loadingStateChanged$.next(false);
+      })
+      .catch((err) => {
+        this.uiService.loadingStateChanged$.next(false);
+        this.snack.open(err.message, '', {
+          duration: 3000,
+        });
+      });
   }
 
   logout(): void {
-    this.user = null;
-    this.subject.next(false);
-    this.router.navigate(['/login']);
-  }
-
-  getUser(): any {
-    // This is the way to break the reference with the object. And return a copy
-    return { ...this.user };
+    this.afAuth.signOut();
   }
 
   isAuth(): boolean {
-    return this.user != null;
-  }
-
-  private authSuccessfully(): void {
-    this.subject.next(true);
-    this.router.navigate(['/training']);
+    return this.isAuthenticated;
   }
 }
