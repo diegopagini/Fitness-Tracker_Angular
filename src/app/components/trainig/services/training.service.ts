@@ -1,35 +1,49 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable, Subject } from 'rxjs';
 import { Exercise } from '../models/exercise.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingService {
   exerciseChanged$ = new Subject<Exercise | null>();
-  private availableExercises: Exercise[] = [
-    { id: 'crunches', name: 'Crunches', duration: 30, calories: 8 },
-    { id: 'touch-toes', name: 'Touch Toes', duration: 180, calories: 15 },
-    { id: 'side-lunges', name: 'Side Lunges', duration: 120, calories: 18 },
-    { id: 'burpees', name: 'Burpees', duration: 60, calories: 8 },
-  ];
   private runingExercise: any;
   private exercises: Exercise[] = [];
 
-  getAvailableExercises(): Exercise[] {
-    return [...this.availableExercises];
+  constructor(private db: AngularFirestore) {}
+
+  getAvailableExercises(): Observable<Exercise[]> {
+    return this.db
+      .collection('availableExercises')
+      .snapshotChanges()
+      .pipe(
+        map((docArray) => {
+          return docArray.map((doc: Exercise | any) => {
+            return {
+              id: doc.payload.doc.id,
+              ...doc.payload.doc.data(),
+            };
+          });
+        })
+      );
   }
 
   startExercise(selectedId: string): void {
-    this.runingExercise = this.availableExercises.find(
-      (ex: Exercise) => ex.id === selectedId
-    );
-    // Emitting a copy of this.runingExercise
-    this.exerciseChanged$.next(JSON.parse(JSON.stringify(this.runingExercise)));
+    this.getAvailableExercises().subscribe((exercises) => {
+      this.runingExercise = exercises.find(
+        (ex: Exercise) => ex.id === selectedId
+      );
+      // Emitting a copy of this.runingExercise
+      this.exerciseChanged$.next(
+        JSON.parse(JSON.stringify(this.runingExercise))
+      );
+    });
   }
 
   completeExercise(): void {
-    this.exercises.push({
+    this.addDataToDatabase({
       ...this.runingExercise,
       date: new Date(),
       state: 'completed',
@@ -39,7 +53,7 @@ export class TrainingService {
   }
 
   cancelExercise(progress: number): void {
-    this.exercises.push({
+    this.addDataToDatabase({
       ...this.runingExercise,
       duration: this.runingExercise.duration * (progress / 100),
       calories: this.runingExercise.calories * (progress / 100),
@@ -55,8 +69,11 @@ export class TrainingService {
     return JSON.parse(JSON.stringify(this.runingExercise));
   }
 
-  getCompletedorCancelledExercises(): Exercise[] {
-    // Another way to create a copy
-    return this.exercises.slice();
+  getCompletedOrCancelledExercises(): Observable<any> {
+    return this.db.collection('finishedExercises').valueChanges();
+  }
+
+  private addDataToDatabase(exercise: Exercise): void {
+    this.db.collection('finishedExercises').add(exercise);
   }
 }

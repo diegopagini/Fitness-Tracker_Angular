@@ -9,6 +9,10 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedComponentsModule } from './shared/shared-components/shared-components.module';
+import { environment } from '../environments/environment';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,8 +25,11 @@ import { SharedComponentsModule } from './shared/shared-components/shared-compon
     AppRoutingModule,
     FlexLayoutModule,
     SharedComponentsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    provideFirestore(() => getFirestore()),
   ],
-  providers: [],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}

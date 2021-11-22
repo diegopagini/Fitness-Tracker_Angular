@@ -28,9 +28,13 @@ export class PastTrainingsComponent implements OnInit, AfterViewInit {
   constructor(private trainingService: TrainingService) {}
 
   ngOnInit(): void {
-    this.dataSource.data =
-      this.trainingService.getCompletedorCancelledExercises();
+    this.trainingService
+      .getCompletedOrCancelledExercises()
+      .subscribe((data) => {
+        this.dataSource.data = data;
+      });
   }
+
   // If we use some ViewChild, we have to call it on this life cicle hook.
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;

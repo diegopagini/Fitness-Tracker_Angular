@@ -16,7 +16,9 @@
     <!-- This is the column of the table, and mat-sort-header is added to say that column is goin to be sortable -->
     <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
     <!-- This is the row of the previous column table. It will loop like ngFor with the directive matCellDef -->
-    <mat-cell *matCellDef="let element">{{ element.date | date }}</mat-cell>
+    <mat-cell *matCellDef="let element">{{
+      element.date.toDate() | date
+    }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="name">
