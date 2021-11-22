@@ -4,6 +4,18 @@ import { AuthGuard } from './components/auth/guards/auth.guard';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'welcome',
+    pathMatch: 'full',
+  },
+  {
+    path: 'welcome',
+    loadChildren: () =>
+      import('./components/welcome/welcome.module').then(
+        (m) => m.WelcomeModule
+      ),
+  },
+  {
     path: 'login',
     loadChildren: () =>
       import('./components/auth/login/login.module').then((m) => m.LoginModule),
@@ -22,19 +34,7 @@ const routes: Routes = [
         (m) => m.TrainigModule
       ),
     // Guard to avoid canActivate the route if the user is not logued in
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'welcome',
-    loadChildren: () =>
-      import('./components/welcome/welcome.module').then(
-        (m) => m.WelcomeModule
-      ),
-  },
-  {
-    path: '',
-    redirectTo: 'welcome',
-    pathMatch: 'full',
+    canLoad: [AuthGuard],
   },
   {
     path: '**',
