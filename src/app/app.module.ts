@@ -17,6 +17,9 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { FooterModule } from './core/footer/footer.module';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { uiReducer } from './store/reducers/ui.reducer';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +39,11 @@ import { FooterModule } from './core/footer/footer.module';
     provideFirestore(() => getFirestore()),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
+    StoreModule.forRoot({ ui: uiReducer }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
 
   bootstrap: [AppComponent],

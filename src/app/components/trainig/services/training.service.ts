@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, Subject, throwError } from 'rxjs';
 import { Exercise } from '../models/exercise.model';
 import { catchError, map } from 'rxjs/operators';
-import Swal from 'sweetalert2';
 import { UiService } from 'src/app/shared/services/ui.service';
 
 @Injectable({
@@ -12,7 +11,6 @@ import { UiService } from 'src/app/shared/services/ui.service';
 export class TrainingService {
   exerciseChanged$ = new Subject<Exercise | null>();
   private runingExercise: any;
-  private exercises: Exercise[] = [];
 
   constructor(private db: AngularFirestore, private uiService: UiService) {}
 
@@ -45,6 +43,8 @@ export class TrainingService {
       this.exerciseChanged$.next(
         JSON.parse(JSON.stringify(this.runingExercise))
       );
+
+      // this.uiService.dispatchStartLoading();
     });
   }
 
@@ -56,6 +56,7 @@ export class TrainingService {
     });
     this.runingExercise = null;
     this.exerciseChanged$.next(null);
+    // this.uiService.dispatchFinishLoading();
   }
 
   cancelExercise(progress: number): void {
@@ -68,6 +69,7 @@ export class TrainingService {
     });
     this.runingExercise = null;
     this.exerciseChanged$.next(null);
+    // this.uiService.dispatchFinishLoading();
   }
 
   getRuningExercise(): Exercise {

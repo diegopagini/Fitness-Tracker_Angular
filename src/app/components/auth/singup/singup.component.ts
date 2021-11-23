@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, of, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { UiService } from 'src/app/shared/services/ui.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/operators';
+import { State } from 'src/app/store/reducers/ui.reducer';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -10,22 +11,19 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './singup.component.html',
   styleUrls: ['./singup.component.css'],
 })
-export class SingupComponent implements OnInit, OnDestroy {
+export class SingupComponent implements OnInit {
   singupForm!: FormGroup;
   maxDate!: Date;
-  isLoading$: Observable<boolean> = of(false);
-  private unsubscribe$ = new Subject<void>();
+  isLoading$!: Observable<boolean>;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private uiService: UiService
+    private store: Store<{ ui: State }>
   ) {}
 
   ngOnInit(): void {
-    this.isLoading$ = this.uiService.loadingStateChanged$.pipe(
-      takeUntil(this.unsubscribe$)
-    );
+    this.isLoading$ = this.store.select('ui').pipe(pluck('isLoading'));
 
     this.singupForm = this.fb.group({
       email: [
@@ -64,11 +62,6 @@ export class SingupComponent implements OnInit, OnDestroy {
     } else {
       this.singupForm.markAllAsTouched();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   private setMaxDate() {

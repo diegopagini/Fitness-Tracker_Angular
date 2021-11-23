@@ -34,27 +34,28 @@ export class AuthService {
   }
 
   registerUser(authData: AuthData): void {
-    this.uiService.loadingStateChanged$.next(true);
+    this.uiService.dispatchStartLoading();
     this.afAuth
       .createUserWithEmailAndPassword(authData.email, authData.password)
       .then(() => {
-        this.uiService.loadingStateChanged$.next(false);
+        this.uiService.dispatchFinishLoading();
       })
       .catch((err) => {
-        this.uiService.loadingStateChanged$.next(false);
+        this.uiService.dispatchFinishLoading();
         this.uiService.showSnackBar(err.message, '', 2500);
       });
   }
 
   login(authData: AuthData): void {
-    this.uiService.loadingStateChanged$.next(true);
+    this.uiService.dispatchStartLoading();
+
     this.afAuth
       .signInWithEmailAndPassword(authData.email, authData.password)
       .then(() => {
-        this.uiService.loadingStateChanged$.next(false);
+        this.uiService.dispatchFinishLoading();
       })
       .catch((err) => {
-        this.uiService.loadingStateChanged$.next(false);
+        this.uiService.dispatchFinishLoading();
         this.uiService.showSnackBar(err.message, '', 2500);
       });
   }
